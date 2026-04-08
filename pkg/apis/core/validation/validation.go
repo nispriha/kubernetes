@@ -542,13 +542,10 @@ func devicePathAlreadyExists(devicePath string, mounts map[string]string) bool {
 	return false
 }
 
-// allowedEmptyDirMountOptions is the set of mount options allowed for emptyDir volumes (noexec, nodev, nosuid).
-var allowedEmptyDirMountOptions = sets.New("noexec", "nodev", "nosuid")
-
 func validateEmptyDirMountOptions(mountOptions []string, fldPath *field.Path) field.ErrorList {
 	allErrs := field.ErrorList{}
 	for i, opt := range mountOptions {
-		if !allowedEmptyDirMountOptions.Has(opt) {
+		if !helper.AllowedEmptyDirMountOptions.Has(opt) {
 			allErrs = append(allErrs, field.Invalid(fldPath.Index(i), opt, "only noexec, nodev, and nosuid are allowed"))
 		}
 	}
